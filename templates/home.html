@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Upload</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container" style="padding-top: 20px">
+        <h1>Upload Training Image Files</h1>
+        <h4>
+            Getting started
+        </h4>
+        <p>
+            Proper settings are critical to successful training. Each value will impact the quality of your trained output.
+        </p>
+        <p>
+            There are three inputs - "Magic Number", "Unique Token", "Regular Token".
+        </p>
+        <h4>
+            Unique Token (required)
+        </h4>
+        <p>
+            Unique tokens should be... <b>unique</b>. They will be used during image generation to generate the output. Naming something "Jeff" will impact all other people named Jeff, so Jeff Bridges and Jeff Goldblum will be sad.<br>
+            Feel free to use random strings like "ahsdfiuah".<br>
+            <b>The unique token should also be what you name your lora model in the training interface</b>
+        </p>
+        <h4>
+            Regular token (semi-required)
+        </h4>
+        <p>
+            Note, both people and concepts can instead use captions, <b>but</b> concepts (kind of) require captions, whereas people only need the regularToken. See more in the training guide.
+        </p>
+        <h4>
+            Magic Number (required)
+        </h4>
+        <p>
+            To determine the number, take the total number of images in your training set and divide that from 400.<br>
+            Example: 10 images = 400/10 = "40_uniqueToken"
+        </p>
+
+        <hr>
+        <h2>
+            Upload here
+        </h2>
+        <form method="POST" action="/" enctype="multipart/form-data" class="mt-4">
+            <div class="form-group">
+                <label for="magic_number">Magic Number:</label>
+                <input type="text" id="magic_number" name="magic_number" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="unique_token">Unique Token:</label>
+                <input type="text" id="unique_token" name="unique_token" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="regular_token">Regular Token:</label>
+                <input type="text" id="regular_token" name="regular_token" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="file">Choose files:</label>
+                <input type="file" id="file" name="file" class="form-control-file" multiple required>
+            </div>
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+        {% if folder_name %}
+        <div class="mt-5">
+            <h2>Files saved in folder: {{ folder_name }}</h2>
+            <ul>
+                {% for file in files_saved %}
+                <li>
+                    <a href="{{ url_for('get_file', unique_token=unique_token, folder=folder_name, filename=file) }}">{{ file }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
